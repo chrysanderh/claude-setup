@@ -4,7 +4,8 @@
   "theme": "dark",
 
   "env": {
-    "EDITOR": "code --wait"
+    "EDITOR": "code --wait",
+    "AGENT_OUTPUT_DIR": "G:\\My Drive\\agent_output"
   },
 
   "permissions": {
