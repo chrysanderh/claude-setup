@@ -1,0 +1,88 @@
+# =============================================================================
+# Claude Code Settings - .gitignore
+# =============================================================================
+# Excludes machine-specific state, secrets, and auto-generated files.
+# Anything that should NOT be shared between Windows and Mac belongs here.
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# Credentials and secrets — NEVER commit these
+# -----------------------------------------------------------------------------
+.credentials.json
+.credentials/
+*.key
+*.pem
+*.token
+auth.json
+
+# -----------------------------------------------------------------------------
+# Per-machine local overrides
+# -----------------------------------------------------------------------------
+# Use settings.local.json for anything machine-specific (paths, OS-dependent
+# MCP servers, personal experiments). It stays out of git by design.
+settings.local.json
+*.local.json
+.env
+.env.*
+
+# -----------------------------------------------------------------------------
+# Auto-generated runtime state
+# -----------------------------------------------------------------------------
+# Claude Code writes session data, project history, and todos here.
+# These are machine-specific and change constantly — never commit.
+projects/
+todos/
+shell-snapshots/
+statsig/
+history/
+sessions/
+ide/
+
+# -----------------------------------------------------------------------------
+# Logs and caches
+# -----------------------------------------------------------------------------
+logs/
+*.log
+*.log.*
+cache/
+.cache/
+tmp/
+.tmp/
+
+# -----------------------------------------------------------------------------
+# OS-generated files
+# -----------------------------------------------------------------------------
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+.directory
+.Trash-*
+
+# -----------------------------------------------------------------------------
+# Editor and IDE files
+# -----------------------------------------------------------------------------
+.vscode/
+.idea/
+*.swp
+*.swo
+.*.sw[a-p]
+
+# -----------------------------------------------------------------------------
+# Backup files
+# -----------------------------------------------------------------------------
+*.bak
+*.backup
+*.orig
+*.old
