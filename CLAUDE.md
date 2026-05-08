@@ -58,3 +58,50 @@ These guidelines apply to **all workspaces** and interactions.
   - **Punctuation**: Never use the EM dash.
   - **Brevity**: Be concise and keep things short. Avoid bloat at all costs. Keep things as short as possible and only as long as strictly necessary.
 
+---
+
+## III. Session Reports
+
+At the end of every working session, generate a timestamped summary report
+and save it to Google Drive.
+
+### Filename format
+`YYYYMMDD_HHMMSS_session_topic.md`
+
+- Use the current local date and time at the moment the report is written
+- `session_topic` is a short description of what the session was about
+- Use lowercase, words separated by underscores, no leading underscore
+- Aim for 3–6 words
+
+Example: `20260508_143022_set_up_claude_settings_repo.md`
+
+### Where to save
+`$AGENT_OUTPUT_DIR/reports/`
+
+### What to include
+1. **Session topic** — one-line summary
+2. **Date and time** — when the session ran
+3. **Goal** — what the user was trying to accomplish
+4. **Actions taken** — bulleted list of what was actually done
+5. **Files changed** — paths of any files created or modified
+6. **Commands run** — non-trivial shell commands executed
+7. **Outcomes** — what worked, what didn't, what's left
+8. **Next steps** — open items or follow-ups, if any
+
+Keep the report concise but specific enough to be useful months later.
+Skip sections that don't apply to the session.
+
+### When to generate
+Generate the report when the user signals the session is wrapping up
+(e.g. "we're done", "thanks, that's all", "wrap this up"), or when
+explicitly asked for a report. Don't generate one for every short exchange.
+
+### Transcript sync
+After writing the report, also sync the session transcripts by running
+the platform-appropriate script:
+
+- Windows: `& $HOME\.claude\scripts\sync-transcripts.ps1`
+- macOS/Linux: `~/.claude/scripts/sync-transcripts.sh`
+
+This copies all session JSONL transcripts to `$AGENT_OUTPUT_DIR/transcripts/`
+with timestamps prefixed to the filename.
