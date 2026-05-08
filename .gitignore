@@ -39,10 +39,12 @@ sessions/
 ide/
 backups/
 plugins/
+file-history/
 history.jsonl
 mcp-needs-auth-cache.json
 policy-limits.json
 remote-settings.json
+.last-cleanup
 
 # -----------------------------------------------------------------------------
 # Logs and caches
