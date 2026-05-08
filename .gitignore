@@ -37,6 +37,12 @@ statsig/
 history/
 sessions/
 ide/
+backups/
+plugins/
+history.jsonl
+mcp-needs-auth-cache.json
+policy-limits.json
+remote-settings.json
 
 # -----------------------------------------------------------------------------
 # Logs and caches
