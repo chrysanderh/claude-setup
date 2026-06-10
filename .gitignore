@@ -41,6 +41,7 @@ backups/
 plugins/
 file-history/
 tasks/
+paste-cache/
 history.jsonl
 mcp-needs-auth-cache.json
 policy-limits.json
