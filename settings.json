@@ -41,6 +41,7 @@
       "Read(**/id_ed25519)"
     ]
   },
+  "model": "claude-fable-5[1m]",
   "theme": "dark",
   "agentPushNotifEnabled": true,
   "remoteControlAtStartup": true
