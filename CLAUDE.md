@@ -14,8 +14,10 @@ These guidelines apply to **all workspaces** and interactions.
    - If no local venv exists, infer the Conda environment name (often matches project folder name, course number like `144`, or project title).
    - *Action*: Run `conda activate <inferred_name>`. If unsure, run `conda env list`.
 
+There are exceptions to these rules, namely for the two repositories pycqed_py3 and libqudev. Here, use the conda environments pycqed311 and libqudev2026, respectively. 
+
 ### 2. Environment Verification
-- **Prompt Check**: Always check the current terminal prompt (e.g., `(base)` vs `(densityNO)`) before executing. If the prompt implies the wrong environment, activate the correct one immediately.
+- **Prompt Check**: Always check the current terminal prompt (e.g., `(base)` vs `(pycqed311)`) before executing. If the prompt implies the wrong environment, activate the correct one immediately.
 - **Path Check**: If uncertain, run `which python` to verify the active interpreter path.
 
 ### 3. Code Verification
@@ -35,22 +37,32 @@ These guidelines apply to **all workspaces** and interactions.
   - **Structure**: Modular, robust, and scalable. Use classes, functions, and proper abstractions.
   - **Commenting**: Use comments according to industry standards. You may use comments during the drafting phase for internal reasoning or step tracking, but you must clean them up before final delivery. Final comments should be minimal, focusing on the "why" rather than the "how," and should follow standard docstring practices.
   - **Best Practices**:
+    - Always check the existing code of a file that you are working on. Write code in that style to match the rest of the file/codebase. This ensures that your code is compatible with large legacy codebases. Not following this rule is embarrassing.
+    - Keep the code concise and simple. Never write long code blocks unless the task requires you to add lots of concise code. 
     - Use Type Hinting (`typing`) where helpful.
     - **Error handling**: Only catch exceptions you can concretely handle. Never silently swallow exceptions. If catching to add context, always re-raise (`raise ... from e`). If catching at a boundary for logging, log then re-raise (`raise`). A bare `except: pass` or catching broadly and continuing as if nothing happened is always wrong — it creates silent bugs that are harder to debug than the original exception.
     - Follow PEP 8 standards.
   - **Performance**: Optimize for speed and memory efficiency (especially for ML/Data tasks).
-  - **Git / Commits**:
-    - **Convention**: Use Conventional Commits (`feat:`, `fix:`, `chore:`, etc.).
-    - **Casing**: **Strictly use lowercase** for the subject description (e.g., `feat: add new layer`, NOT `feat: Add new layer`).
-    - **Co-authors**: **Never add Claude as co-author in commits.** Do not include `Co-Authored-By: Claude ...` lines in any commit messages. Always commit with only human authors.
-  - **Test Organization (REQUIRED)**:
-    - **MUST**: Place all test files in a `tests/` directory that **exactly mirrors** the `src/` structure.
-      - `src/utils/helper.py` → `tests/utils/test_helper.py`
-      - `src/models/user.py` → `tests/models/test_user.py`
-      - `src/api/endpoints/auth.py` → `tests/api/endpoints/test_auth.py`
-    - **File Naming**: All test files **must** be prefixed with `test_` (e.g., `test_helper.py`, `test_auth.py`).
-    - **Directory Structure**: Create directories in `tests/` to match `src/` hierarchy. Do not flatten test files into a single directory.
-    - **Violations**: If you create test files outside this structure, fix the organization before committing. Do not merge PRs or commit code with disorganized tests.
+- **Git / Commits Convention**:
+  - **Subject Line**:
+    1. Separate subject from body with a blank line.
+    2. Limit the subject line to 50 characters.
+    3. **Strictly use lowercase** for the subject description (e.g., `feat: add new layer`, NOT `feat: Add new layer`).
+    4. Do not end the subject line with a period.
+    5. Use the imperative mood in the subject line.
+  - **Body**:
+    1. Wrap the body at 72 characters.
+    2. Use the body to explain what and why vs. how. Focus on making clear the reasons why the changes were made in the first place.
+    3. Keep the text as concise as possible. No long sentences. Preferrably use single-line bullet points for this. 
+  - **Co-authors**: **Never add Claude as co-author in commits.** Do not include `Co-Authored-By: Claude ...` lines in any commit messages. Always commit with only human authors.
+- **Test Organization (REQUIRED)**:
+  - **MUST**: Place all test files in a `tests/` directory that **exactly mirrors** the `src/` structure.
+    - `src/utils/helper.py` → `tests/utils/test_helper.py`
+    - `src/models/user.py` → `tests/models/test_user.py`
+    - `src/api/endpoints/auth.py` → `tests/api/endpoints/test_auth.py`
+  - **File Naming**: All test files **must** be prefixed with `test_` (e.g., `test_helper.py`, `test_auth.py`).
+  - **Directory Structure**: Create directories in `tests/` to match `src/` hierarchy. Do not flatten test files into a single directory.
+  - **Violations**: If you create test files outside this structure, fix the organization before committing. Do not merge PRs or commit code with disorganized tests.
 - **Writing Tone**:
   - **Tone**: Academic (ML, Physics or Chemistry papers at high quality journals), technical, and concise. Avoid the "AI accent" (e.g., avoid "It is worth noting," "In conclusion," "Let's delve into," or "I have successfully..."). The quality should match a seasoned author published in Nature or Science.
   - **Vocabulary**: Use simple but precise technical language. Avoid overly complex synonyms when simpler ones work (e.g., use "use" instead of "utilize," "fix" instead of "rectify," "show" instead of "demonstrate").
