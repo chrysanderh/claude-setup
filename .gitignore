@@ -47,6 +47,7 @@ mcp-needs-auth-cache.json
 policy-limits.json
 remote-settings.json
 .last-cleanup
+.last-update-result.json
 
 # -----------------------------------------------------------------------------
 # Logs and caches
