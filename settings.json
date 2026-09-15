@@ -4,7 +4,8 @@
   "env": {
     "EDITOR": "code --wait"
   },
-  "includeCoAuthoredBy": true,
+  "includeCoAuthoredBy": false,
+  "gitAttribution": false,
   "permissions": {
     "allow": [
       "Bash(git status)",
