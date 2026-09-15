@@ -88,7 +88,37 @@ and save it to Google Drive.
 Example: `20260508_143022_set_up_claude_settings_repo.md`
 
 ### Where to save
-`$AGENT_OUTPUT_DIR/reports/`
+`$AGENT_OUTPUT_DIR/reports/`. Write the file directly with the Write tool.
+Do not shell out to write it.
+
+The Write tool takes a literal absolute path and cannot expand a variable,
+so resolve `AGENT_OUTPUT_DIR` first. Never hardcode its value here: it
+differs per machine and per OS. Resolution order:
+
+1. `env.AGENT_OUTPUT_DIR` in `~/.claude/settings.local.json` — the
+   per-machine override, gitignored by design. Read the file.
+2. The shell environment, if that file has no entry:
+   `echo "$AGENT_OUTPUT_DIR"` (Git Bash) or `$env:AGENT_OUTPUT_DIR`
+   (PowerShell).
+3. If both are empty, ask the user. Do not invent a path.
+
+Join the resolved value with `reports/` using that platform's separator.
+
+### Canonical commands
+Use these exact forms so they match the pre-approved permission rules and
+do not trigger an approval prompt. Do not improvise variants.
+
+Pick the form matching the shell the tool call actually runs in. The Bash
+tool on Windows is Git Bash, not PowerShell: it strips backslashes and does
+not know PowerShell cmdlets. Always use forward slashes in paths there.
+
+Timestamp:
+- Git Bash: `date "+%Y%m%d_%H%M%S"`
+- PowerShell: `Get-Date -Format "yyyyMMdd_HHmmss"`
+
+Create the target directory if missing:
+- Git Bash: `mkdir -p "$AGENT_OUTPUT_DIR/reports"`
+- PowerShell: `New-Item -ItemType Directory -Force -Path "$env:AGENT_OUTPUT_DIR\reports"`
 
 ### What to include
 1. **Session topic** — one-line summary
@@ -109,10 +139,16 @@ Generate the report when the user signals the session is wrapping up
 explicitly asked for a report. Don't generate one for every short exchange.
 
 ### Transcript sync
-After writing the report, also sync the session transcripts by running
-the platform-appropriate script:
+After writing the report, also sync the session transcripts by running the
+script for the shell you are in. Pass the script path unquoted and absolute;
+a quoted or relative path will not match the pre-approved permission rule
+and will prompt for approval. Expand `~/.claude/scripts/` to this machine's
+real home directory rather than hardcoding a username here: the matching
+rules live in `settings.local.json`, which is per-machine.
 
-- Windows: `& $HOME\.claude\scripts\sync-transcripts.ps1`
+- Windows, Bash tool (Git Bash): forward slashes, e.g.
+  `powershell -NoProfile -ExecutionPolicy Bypass -File <home>/.claude/scripts/sync-transcripts.ps1`
+- Windows, PowerShell: backslashes, same script.
 - macOS/Linux: `~/.claude/scripts/sync-transcripts.sh`
 
 This copies all session JSONL transcripts to `$AGENT_OUTPUT_DIR/transcripts/`
