@@ -28,15 +28,13 @@
       "Bash(find:*)",
       "Bash(date:*)",
       "Bash(mkdir:*)",
-      "Bash(Get-Date:*)",
-      "Bash(Test-Path:*)",
-      "Bash(Get-ChildItem:*)",
-      "Bash(New-Item -ItemType Directory:*)",
-      "Bash(~/.claude/scripts/:*)",
-      "Bash($HOME/.claude/scripts/:*)",
+      "Bash(bash ~/.claude/scripts/*)",
       "Read(**)",
       "Edit(**)",
-      "Write(**)"
+      "Write(**)",
+      "Read(//**/agent_output/**)",
+      "Edit(//**/agent_output/**)",
+      "Write(//**/agent_output/**)"
     ],
     "deny": [
       "Bash(rm -rf:*)",
