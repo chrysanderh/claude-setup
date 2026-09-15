@@ -45,6 +45,11 @@ paste-cache/
 history.jsonl
 mcp-needs-auth-cache.json
 policy-limits.json
+policy-limits.json.stamp.json
+daemon-auth-status.json
+daemon-auth-cooldown
+jobs/
+plans/
 remote-settings.json
 .last-cleanup
 .last-update-result.json
