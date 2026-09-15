@@ -93,32 +93,34 @@ Do not shell out to write it.
 
 The Write tool takes a literal absolute path and cannot expand a variable,
 so resolve `AGENT_OUTPUT_DIR` first. Never hardcode its value here: it
-differs per machine and per OS. Resolution order:
+differs per machine and per OS. It lives in the OS environment, set once per
+machine (`setx` on Windows, shell rc on macOS), because the only settings
+file that loads in every project is `~/.claude/settings.json`, and that file
+is shared between both machines. There is no user-level
+`settings.local.json`: that name is project scope only.
 
-1. `env.AGENT_OUTPUT_DIR` in `~/.claude/settings.local.json` — the
-   per-machine override, gitignored by design. Read the file.
-2. The shell environment, if that file has no entry:
-   `echo "$AGENT_OUTPUT_DIR"` (Git Bash) or `$env:AGENT_OUTPUT_DIR`
-   (PowerShell).
-3. If both are empty, ask the user. Do not invent a path.
+1. Read it from the shell: `echo "$AGENT_OUTPUT_DIR"` (Git Bash) or
+   `$env:AGENT_OUTPUT_DIR` (PowerShell).
+2. If empty, ask the user. Do not invent a path.
 
-Join the resolved value with `reports/` using that platform's separator.
+On Windows the value carries backslashes. Convert them to forward slashes
+before using it as a path in the Bash tool, and join with `reports/`.
 
 ### Canonical commands
 Use these exact forms so they match the pre-approved permission rules and
 do not trigger an approval prompt. Do not improvise variants.
 
-Pick the form matching the shell the tool call actually runs in. The Bash
-tool on Windows is Git Bash, not PowerShell: it strips backslashes and does
-not know PowerShell cmdlets. Always use forward slashes in paths there.
+The Bash tool is Git Bash on Windows and the system shell on macOS, so one
+POSIX form covers both. It strips backslashes out of command text, so never
+type a Windows path with backslashes into it.
 
 Timestamp:
-- Git Bash: `date "+%Y%m%d_%H%M%S"`
-- PowerShell: `Get-Date -Format "yyyyMMdd_HHmmss"`
+`date "+%Y%m%d_%H%M%S"`
 
-Create the target directory if missing:
-- Git Bash: `mkdir -p "$AGENT_OUTPUT_DIR/reports"`
-- PowerShell: `New-Item -ItemType Directory -Force -Path "$env:AGENT_OUTPUT_DIR\reports"`
+Create the target directory if missing. Substitute the resolved output
+directory literally, with forward slashes, rather than referencing the
+variable:
+`mkdir -p "<output dir>/reports"`
 
 ### What to include
 1. **Session topic** — one-line summary
@@ -139,17 +141,16 @@ Generate the report when the user signals the session is wrapping up
 explicitly asked for a report. Don't generate one for every short exchange.
 
 ### Transcript sync
-After writing the report, also sync the session transcripts by running the
-script for the shell you are in. Pass the script path unquoted and absolute;
-a quoted or relative path will not match the pre-approved permission rule
-and will prompt for approval. Expand `~/.claude/scripts/` to this machine's
-real home directory rather than hardcoding a username here: the matching
-rules live in `settings.local.json`, which is per-machine.
+After writing the report, sync the session transcripts with the single
+command that works on both machines:
 
-- Windows, Bash tool (Git Bash): forward slashes, e.g.
-  `powershell -NoProfile -ExecutionPolicy Bypass -File <home>/.claude/scripts/sync-transcripts.ps1`
-- Windows, PowerShell: backslashes, same script.
-- macOS/Linux: `~/.claude/scripts/sync-transcripts.sh`
+`bash ~/.claude/scripts/sync-transcripts.sh`
+
+Write `~` literally. Bash permission rules match the command text as
+written, with no shell expansion, and the pre-approved rule is
+`Bash(bash ~/.claude/scripts/*)`. The script normalizes the Windows
+backslash form of `AGENT_OUTPUT_DIR` itself, so there is no per-platform
+variant to choose and no PowerShell invocation to remember.
 
 This copies all session JSONL transcripts to `$AGENT_OUTPUT_DIR/transcripts/`
 with timestamps prefixed to the filename.
