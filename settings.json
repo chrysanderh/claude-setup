@@ -51,6 +51,7 @@
     ]
   },
   "model": "opus[1m]",
+  "effortLevel": "high",
   "theme": "dark",
   "remoteControlAtStartup": true,
   "agentPushNotifEnabled": true
